@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { trigger, state, style } from '@angular/animations';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 import { Imagem } from './imagem.model';
 
@@ -14,7 +14,8 @@ import { Imagem } from './imagem.model';
       })),
       state('visivel', style({
         opacity: 1
-      }))
+      })),
+      transition('escondido <=> visivel', animate('2s ease-in'))
     ])
   ]
 })
