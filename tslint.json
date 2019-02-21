@@ -70,6 +70,15 @@
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
-    "directive-class-suffix": true
+    "directive-class-suffix": true,
+    "whitespace": [
+      true,
+      //"check-branch",
+      "check-module",
+      "check-operator",
+      "check-type-operator",
+      "check-typecast",
+      "check-preblock"
+    ]
   }
 }
