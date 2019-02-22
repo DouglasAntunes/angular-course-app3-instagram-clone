@@ -95,4 +95,12 @@ export class AcessoComponent implements OnInit {
     this.cadastro = (event === 'cadastro');
   }
 
+  public inicioDaAnimacao(): void {
+    // console.log('inicio da animação');
+  }
+
+  public fimDaAnimacao(): void {
+    // console.log('fim da animação');
+  }
+
 }
