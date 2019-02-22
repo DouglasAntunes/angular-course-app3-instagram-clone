@@ -1,4 +1,6 @@
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/database';
 
 import { Usuario } from './acesso/usuario.model';
 
@@ -10,10 +12,19 @@ export class AutenticacaoService {
         firebase.auth().createUserWithEmailAndPassword(
             usuario.email, usuario.senha
         ).then((resposta: any) => {
-            console.log(resposta);
+            // console.log(resposta);
+
+            // remover a senha do obj usuário
+            delete usuario.senha;
+
+            // registrando dados complementares no path email na base64
+            firebase.database().ref(`usuario_detalhe/${btoa(usuario.email)}`)
+                .set({
+                    usuario
+            });
         }).catch((erro: Error) => {
             console.log('Erro na criação de usuário: ', erro);
-        })
+        });
     }
 
 
