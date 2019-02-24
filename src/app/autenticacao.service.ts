@@ -52,4 +52,8 @@ export class AutenticacaoService {
                 console.log('Erro ao logar o usuário: ', erro);
             });
     }
+
+    public autenticado(): boolean {
+        return (this.tokenId !== undefined);
+    }
 }
