@@ -7,9 +7,9 @@ import { Usuario } from './acesso/usuario.model';
 export class AutenticacaoService {
 
 
-    public cadastrarUsuario(usuario: Usuario): void {
+    public cadastrarUsuario(usuario: Usuario): Promise<any> {
         // console.log('chegamos até o serviço: ', usuario);
-        firebase.auth().createUserWithEmailAndPassword(
+        return firebase.auth().createUserWithEmailAndPassword(
             usuario.email, usuario.senha
         ).then((resposta: any) => {
             // console.log(resposta);
