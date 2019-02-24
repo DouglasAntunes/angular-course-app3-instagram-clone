@@ -15,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { PublicacoesComponent } from './home/publicacoes/publicacoes.component';
 
 import { ROUTES } from './app.routes';
+import { AutenticacaoGuardService } from './autenticacao-guard.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ROUTES } from './app.routes';
     RouterModule.forRoot(ROUTES)
   ],
   providers: [
-    AutenticacaoService
+    AutenticacaoService,
+    AutenticacaoGuardService
   ],
   bootstrap: [AppComponent]
 })
