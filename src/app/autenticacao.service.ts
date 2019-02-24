@@ -45,6 +45,7 @@ export class AutenticacaoService {
                     .then((idToken: string) => {
                         this.tokenId = idToken;
                         // console.log(this.tokenId);
+                        localStorage.setItem('idToken', idToken);
                         this.router.navigate(['/home']);
                 });
             })
@@ -54,6 +55,9 @@ export class AutenticacaoService {
     }
 
     public autenticado(): boolean {
+        if(this.tokenId === undefined && localStorage.getItem('idToken') !== null) {
+            this.tokenId = localStorage.getItem('idToken');
+        }
         return (this.tokenId !== undefined);
     }
 }
