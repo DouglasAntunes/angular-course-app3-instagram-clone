@@ -6,6 +6,7 @@ import { Usuario } from './acesso/usuario.model';
 
 export class AutenticacaoService {
 
+    public tokenId: string;
 
     public cadastrarUsuario(usuario: Usuario): Promise<any> {
         // console.log('chegamos até o serviço: ', usuario);
@@ -31,10 +32,15 @@ export class AutenticacaoService {
         console.log('Email: ', email, ' Senha: ', senha);
         firebase.auth().signInWithEmailAndPassword(email, senha)
             .then((resposta: any) => {
-                console.log(resposta);
+                // console.log(resposta);
+                firebase.auth().currentUser.getIdToken()
+                    .then((idToken: string) => {
+                        this.tokenId = idToken;
+                        console.log(this.tokenId);
+                });
             })
             .catch((erro: Error) => {
-                console.log(erro);
+                console.log('Erro ao logar o usuário: ', erro);
             });
     }
 }
