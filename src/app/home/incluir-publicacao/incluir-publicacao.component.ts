@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { BdService } from 'src/app/bd.service';
 
 @Component({
   selector: 'app-incluir-publicacao',
@@ -12,13 +13,15 @@ export class IncluirPublicacaoComponent implements OnInit {
     titulo: new FormControl(null)
   });
 
-  constructor() { }
+  constructor(
+    private bd: BdService
+  ) { }
 
   ngOnInit() {
   }
 
   public publicar(): void {
-    console.log('Chegamos até aqui');
+    this.bd.publicar();
   }
 
 }

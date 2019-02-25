@@ -10,13 +10,15 @@ import { BannerComponent } from './acesso/banner/banner.component';
 import { LoginComponent } from './acesso/login/login.component';
 import { CadastroComponent } from './acesso/cadastro/cadastro.component';
 
-import { AutenticacaoService } from './autenticacao.service';
 import { HomeComponent } from './home/home.component';
 import { PublicacoesComponent } from './home/publicacoes/publicacoes.component';
+import { IncluirPublicacaoComponent } from './home/incluir-publicacao/incluir-publicacao.component';
 
 import { ROUTES } from './app.routes';
+
+import { AutenticacaoService } from './autenticacao.service';
 import { AutenticacaoGuardService } from './autenticacao-guard.service';
-import { IncluirPublicacaoComponent } from './home/incluir-publicacao/incluir-publicacao.component';
+import { BdService } from './bd.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { IncluirPublicacaoComponent } from './home/incluir-publicacao/incluir-pu
   ],
   providers: [
     AutenticacaoService,
-    AutenticacaoGuardService
+    AutenticacaoGuardService,
+    BdService
   ],
   bootstrap: [AppComponent]
 })
