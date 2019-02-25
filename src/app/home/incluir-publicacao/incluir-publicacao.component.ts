@@ -15,6 +15,8 @@ export class IncluirPublicacaoComponent implements OnInit {
 
   public email: string;
 
+  private image: any;
+
   public formulario: FormGroup = new FormGroup({
     titulo: new FormControl(null)
   });
@@ -37,4 +39,7 @@ export class IncluirPublicacaoComponent implements OnInit {
     });
   }
 
+  public preparaImagemUpload(event: Event): void {
+    console.log((event.target as HTMLInputElement).files);
+  }
 }
