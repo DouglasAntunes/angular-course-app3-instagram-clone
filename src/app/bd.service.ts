@@ -46,10 +46,28 @@ export class BdService {
     }
 
     public consultaPublicacoes(emailUsuario: string): any {
+        // consulta as publicações no database
         firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
             .once('value')
             .then((snapshot: any) => {
-                console.log(snapshot.val());
+                // console.log(snapshot.val());
+                const publicacoes: any[] = [];
+
+                snapshot.forEach((childSnapshot: any) => {
+
+                    const publicacao: any = childSnapshot.val();
+
+                    // consultar a url da imagem no storage
+                    firebase.storage().ref()
+                        .child(`imagens/${childSnapshot.key}`)
+                        .getDownloadURL()
+                        .then((url: string) => {
+                            // console.log(url);
+                            publicacao.urlImagem = url;
+                            publicacoes.push(publicacao);
+                    });
+                });
+                console.log(publicacoes);
             })
             .catch((erro: Error) => console.log(erro));
     }
