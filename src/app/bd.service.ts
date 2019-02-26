@@ -44,4 +44,13 @@ export class BdService {
             );
         });
     }
+
+    public consultaPublicacoes(emailUsuario: string): any {
+        firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
+            .once('value')
+            .then((snapshot: any) => {
+                console.log(snapshot.val());
+            })
+            .catch((erro: Error) => console.log(erro));
+    }
 }
