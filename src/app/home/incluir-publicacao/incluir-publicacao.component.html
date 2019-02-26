@@ -34,7 +34,12 @@
         </button>
       </div>
       <div class="modal-body">
-        Progresso: {{ porcentagemUpload }}%
+        <div class="progress" style="height: 25px;">
+            <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated"
+              role="progressbar"
+              [style.width.%]="porcentagemUpload"
+            >Enviando...</div>
+        </div>
       </div>    
     </div>
     <div class="modal-content" *ngIf="progressoPublicacao === 'concluido'">
