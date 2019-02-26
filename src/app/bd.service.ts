@@ -1,8 +1,18 @@
+import { Injectable } from '@angular/core';
+
 import * as firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/storage';
 
+import { ProgressoService } from './progresso.service';
+
+@Injectable()
 export class BdService {
+
+    constructor(
+        private progressoService: ProgressoService
+    ) { }
+
     public publicar(publicacao: any): void {
         console.log(publicacao);
 
@@ -15,13 +25,17 @@ export class BdService {
                 // acompanhamento do progresso de upload
                 (snapshot: any) => {
                     // console.log(snapshot);
+                    this.progressoService.status = 'andamento';
+                    this.progressoService.estado = snapshot;
                 },
                 (error: Error) => {
-                    console.log(error);
+                    // console.log(error);
+                    this.progressoService.status = 'erro';
                 },
                 // finalização do processo
                 () => {
                     // console.log('upload completo');
+                    this.progressoService.status = 'concluido';
                 }
             );
 

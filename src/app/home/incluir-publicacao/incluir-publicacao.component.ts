@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { BdService } from 'src/app/bd.service';
+import { ProgressoService } from 'src/app/progresso.service';
+
+import { interval, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
@@ -17,12 +21,16 @@ export class IncluirPublicacaoComponent implements OnInit {
 
   private imagem: any;
 
+  public progressoPublicacao: string = 'pendente';
+  public porcentagemUpload: number;
+
   public formulario: FormGroup = new FormGroup({
     titulo: new FormControl(null)
   });
 
   constructor(
-    private bd: BdService
+    private bdService: BdService,
+    private progressoService: ProgressoService
   ) { }
 
   ngOnInit() {
@@ -33,11 +41,31 @@ export class IncluirPublicacaoComponent implements OnInit {
   }
 
   public publicar(): void {
-    this.bd.publicar({
+    this.bdService.publicar({
       email: this.email,
       titulo: this.formulario.value.titulo,
       imagem: this.imagem[0]
     });
+
+    const continua = new Subject();
+    continua.next(true);
+    const acompanhamentoUpload = interval(1500).pipe(
+      takeUntil(continua)
+    );
+
+    acompanhamentoUpload.subscribe(() => {
+      console.log(this.progressoService.status);
+      console.log('2 ',this.progressoService.estado);
+      this.progressoPublicacao = 'andamento';
+
+      this.porcentagemUpload = Math.round((this.progressoService.estado.bytesTransferred / this.progressoService.estado.totalBytes) * 100);
+
+      if(this.progressoService.status === 'concluido') {
+        this.progressoPublicacao = 'concluido';
+        continua.next(false);
+      }
+    });
+
   }
 
   public preparaImagemUpload(event: Event): void {

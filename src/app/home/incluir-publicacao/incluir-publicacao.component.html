@@ -1,6 +1,6 @@
 <div class="modal fade" id="incluirPublicacao" tabindex="-1" role="dialog" aria-labelledby="incluirPublicacao" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content" *ngIf="progressoPublicacao === 'pendente'">
       <form [formGroup]="formulario" (ngSubmit)="publicar()">
         <div class="modal-header">
           <h5 class="modal-title">Criar uma publicação</h5>
@@ -25,6 +25,28 @@
           <button type="submit" class="btn btn-primary">Publicar</button>
         </div>
       </form>
+    </div>
+    <div class="modal-content" *ngIf="progressoPublicacao === 'andamento'">
+      <div class="modal-header">
+        <h5 class="modal-title">Publicação em andamento</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Progresso: {{ porcentagemUpload }}%
+      </div>    
+    </div>
+    <div class="modal-content" *ngIf="progressoPublicacao === 'concluido'">
+      <div class="modal-header">
+        <h5 class="modal-title">Publicação realizada com sucesso</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Sua publicação foi realizada com sucesso!
+      </div>
     </div>
   </div>
 </div>

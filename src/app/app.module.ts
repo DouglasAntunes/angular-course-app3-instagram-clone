@@ -19,6 +19,7 @@ import { ROUTES } from './app.routes';
 import { AutenticacaoService } from './autenticacao.service';
 import { AutenticacaoGuardService } from './autenticacao-guard.service';
 import { BdService } from './bd.service';
+import { ProgressoService } from './progresso.service';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { BdService } from './bd.service';
   providers: [
     AutenticacaoService,
     AutenticacaoGuardService,
-    BdService
+    BdService,
+    ProgressoService
   ],
   bootstrap: [AppComponent]
 })
