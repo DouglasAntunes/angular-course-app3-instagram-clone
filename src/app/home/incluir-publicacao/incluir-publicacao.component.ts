@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { BdService } from 'src/app/bd.service';
@@ -23,6 +23,8 @@ export class IncluirPublicacaoComponent implements OnInit {
 
   public progressoPublicacao: string = 'pendente';
   public porcentagemUpload: number = 0;
+
+  @Output() public atualizarTimeLine: EventEmitter<any> = new EventEmitter();
 
   public formulario: FormGroup = new FormGroup({
     titulo: new FormControl(null)
@@ -61,6 +63,11 @@ export class IncluirPublicacaoComponent implements OnInit {
 
       if(this.progressoService.status === 'concluido') {
         this.progressoPublicacao = 'concluido';
+
+        // emitir um evento do componente parent (home)
+        this.atualizarTimeLine.emit();
+
+        // desabilita o timer
         continua.next(false);
       }
     });
