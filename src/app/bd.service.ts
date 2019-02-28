@@ -64,7 +64,16 @@ export class BdService {
                         .then((url: string) => {
                             // console.log(url);
                             publicacao.urlImagem = url;
-                            publicacoes.push(publicacao);
+
+                            // Obter o nome de usuário
+                            firebase.database().ref(`usuario_detalhe/${btoa(emailUsuario)}`)
+                                .once('value')
+                                // tslint:disable-next-line:no-shadowed-variable
+                                .then((snapshot: any) => {
+                                    // console.log(snapshot.val().usuario.nomeUsuario);
+                                    publicacao.nomeUsuario = snapshot.val().usuario.nomeUsuario;
+                                    publicacoes.push(publicacao);
+                            });
                     });
                 });
                 console.log(publicacoes);
