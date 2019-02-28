@@ -45,9 +45,11 @@ export class BdService {
         });
     }
 
-    public consultaPublicacoes(emailUsuario: string): any {
-        // consulta as publicações no database
-        firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
+    public consultaPublicacoes(emailUsuario: string): Promise<any> {
+
+        return new Promise((resolve, reject) => {
+            // consulta as publicações no database
+            firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
             .once('value')
             .then((snapshot: any) => {
                 // console.log(snapshot.val());
@@ -76,8 +78,13 @@ export class BdService {
                             });
                     });
                 });
-                console.log(publicacoes);
+                // console.log(publicacoes);
+                resolve(publicacoes);
             })
-            .catch((erro: Error) => console.log(erro));
+            .catch((erro: Error) => {
+                // console.log(erro);
+                reject(erro);
+            });
+        });
     }
 }

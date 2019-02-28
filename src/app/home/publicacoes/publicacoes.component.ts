@@ -14,6 +14,8 @@ export class PublicacoesComponent implements OnInit {
 
   public email: string;
 
+  public publicacoes: any[];
+
   constructor(
     private bdService: BdService
   ) { }
@@ -27,7 +29,11 @@ export class PublicacoesComponent implements OnInit {
   }
 
   public atualizarTimeLine(): void {
-    this.bdService.consultaPublicacoes(this.email);
+    this.bdService.consultaPublicacoes(this.email)
+      .then((publicacoes: any) => {
+        // console.log(publicacoes);
+        this.publicacoes = publicacoes;
+    });
   }
 
 }
