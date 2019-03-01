@@ -95,10 +95,3 @@ export class BdService {
         });
     }
 }
-
-
-/*
-
-
-
-*/
