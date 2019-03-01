@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { AutenticacaoService } from 'src/app/autenticacao.service';
 
@@ -13,8 +13,8 @@ export class LoginComponent implements OnInit {
   @Output() public exibirPainel: EventEmitter<string> = new EventEmitter();
 
   public formulario: FormGroup = new FormGroup({
-    email: new FormControl(null),
-    senha: new FormControl(null)
+    email: new FormControl(null, [ Validators.required ]),
+    senha: new FormControl(null, [ Validators.required, Validators.minLength(6) ])
   });
 
   constructor(
