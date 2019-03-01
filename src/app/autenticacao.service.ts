@@ -36,22 +36,26 @@ export class AutenticacaoService {
         });
     }
 
-    public autenticar(email: string, senha: string): void {
-        console.log('Email: ', email, ' Senha: ', senha);
-        firebase.auth().signInWithEmailAndPassword(email, senha)
-            .then((resposta: any) => {
-                // console.log(resposta);
-                firebase.auth().currentUser.getIdToken()
-                    .then((idToken: string) => {
-                        this.tokenId = idToken;
-                        // console.log(this.tokenId);
-                        localStorage.setItem('idToken', idToken);
-                        this.router.navigate(['/home']);
-                });
-            })
-            .catch((erro: Error) => {
-                console.log('Erro ao logar o usuário: ', erro);
+    public autenticar(email: string, senha: string): Promise<any> {
+        // console.log('Email: ', email, ' Senha: ', senha);
+        return new Promise((resolve, reject) => {
+            firebase.auth().signInWithEmailAndPassword(email, senha)
+                .then((resposta: any) => {
+                    // console.log(resposta);
+                    firebase.auth().currentUser.getIdToken()
+                        .then((idToken: string) => {
+                            this.tokenId = idToken;
+                            // console.log(this.tokenId);
+                            localStorage.setItem('idToken', idToken);
+                            resolve();
+                            this.router.navigate(['/home']);
+                    });
+                })
+                .catch((erro: any) => {
+                    // console.log('Erro ao logar o usuário: ', erro);
+                    reject(erro.code);
             });
+        });
     }
 
     public autenticado(): boolean {

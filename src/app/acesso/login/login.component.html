@@ -24,9 +24,14 @@
         [disabled]="formulario.invalid"
       >Entrar</button>
     </form>
-    <hr />
 
-    <p class="small text-danger text-center">O nome de usuário inserido não pertence a uma conta. Verifique seu nome de usuário e tente novamente.</p>
+    <div *ngIf="mensagemErro !== undefined">
+      <hr />
+
+      <p 
+        class="small text-danger text-center"
+      >{{ mensagemErro }}</p>
+    </div>
 
   </div>
 </div>
