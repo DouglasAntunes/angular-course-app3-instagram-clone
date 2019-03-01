@@ -50,32 +50,39 @@ export class BdService {
         return new Promise((resolve, reject) => {
             // consulta as publicações no database
             firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
+            .orderByKey()
             .once('value')
             .then((snapshot: any) => {
                 // console.log(snapshot.val());
                 const publicacoes: any[] = [];
 
                 snapshot.forEach((childSnapshot: any) => {
-
                     const publicacao: any = childSnapshot.val();
-
+                    publicacao.key = childSnapshot.key;
+                    publicacoes.push(publicacao);
+                });
+                // console.log(publicacoes);
+                return publicacoes.reverse();
+            })
+            .then((publicacoes: any) => {
+                // console.log(publicacoes);
+                publicacoes.forEach((publicacao: any) => {
                     // consultar a url da imagem no storage
                     firebase.storage().ref()
-                        .child(`imagens/${childSnapshot.key}`)
-                        .getDownloadURL()
-                        .then((url: string) => {
-                            // console.log(url);
-                            publicacao.urlImagem = url;
+                    .child(`imagens/${publicacao.key}`)
+                    .getDownloadURL()
+                    .then((url: string) => {
+                        // console.log(url);
+                        publicacao.urlImagem = url;
 
-                            // Obter o nome de usuário
-                            firebase.database().ref(`usuario_detalhe/${btoa(emailUsuario)}`)
-                                .once('value')
-                                // tslint:disable-next-line:no-shadowed-variable
-                                .then((snapshot: any) => {
-                                    // console.log(snapshot.val().usuario.nomeUsuario);
-                                    publicacao.nomeUsuario = snapshot.val().usuario.nomeUsuario;
-                                    publicacoes.push(publicacao);
-                            });
+                        // Obter o nome de usuário
+                        firebase.database().ref(`usuario_detalhe/${btoa(emailUsuario)}`)
+                            .once('value')
+                            // tslint:disable-next-line:no-shadowed-variable
+                            .then((snapshot: any) => {
+                                // console.log(snapshot.val().usuario.nomeUsuario);
+                                publicacao.nomeUsuario = snapshot.val().usuario.nomeUsuario;
+                        });
                     });
                 });
                 // console.log(publicacoes);
@@ -88,3 +95,10 @@ export class BdService {
         });
     }
 }
+
+
+/*
+
+
+
+*/
