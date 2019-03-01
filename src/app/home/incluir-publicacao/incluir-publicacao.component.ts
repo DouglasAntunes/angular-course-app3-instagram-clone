@@ -10,6 +10,8 @@ import { takeUntil } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
+import { Publicacao } from '../publicacao.model';
+
 @Component({
   selector: 'app-incluir-publicacao',
   templateUrl: './incluir-publicacao.component.html',
@@ -43,11 +45,7 @@ export class IncluirPublicacaoComponent implements OnInit {
   }
 
   public publicar(): void {
-    this.bdService.publicar({
-      email: this.email,
-      titulo: this.formulario.value.titulo,
-      imagem: this.imagem[0]
-    });
+    this.bdService.publicar(new Publicacao('', '', this.email, this.formulario.value.titulo, this.imagem[0], ''));
 
     const continua = new Subject();
     continua.next(true);

@@ -4,6 +4,8 @@ import * as firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/storage';
 
+import { Publicacao } from './home/publicacao.model';
+
 import { ProgressoService } from './progresso.service';
 
 @Injectable()
@@ -13,7 +15,7 @@ export class BdService {
         private progressoService: ProgressoService
     ) { }
 
-    public publicar(publicacao: any): void {
+    public publicar(publicacao: Publicacao): void {
         // console.log(publicacao);
 
         // Inclusão do título e referencia da imagem
@@ -54,19 +56,19 @@ export class BdService {
             .once('value')
             .then((snapshot: any) => {
                 // console.log(snapshot.val());
-                const publicacoes: any[] = [];
+                const publicacoes: Publicacao[] = [];
 
                 snapshot.forEach((childSnapshot: any) => {
-                    const publicacao: any = childSnapshot.val();
+                    const publicacao: Publicacao = childSnapshot.val();
                     publicacao.key = childSnapshot.key;
                     publicacoes.push(publicacao);
                 });
                 // console.log(publicacoes);
                 return publicacoes.reverse();
             })
-            .then((publicacoes: any) => {
+            .then((publicacoes: Publicacao[]) => {
                 // console.log(publicacoes);
-                publicacoes.forEach((publicacao: any) => {
+                publicacoes.forEach((publicacao: Publicacao) => {
                     // consultar a url da imagem no storage
                     firebase.storage().ref()
                     .child(`imagens/${publicacao.key}`)

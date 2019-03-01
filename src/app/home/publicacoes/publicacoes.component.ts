@@ -5,6 +5,8 @@ import { BdService } from 'src/app/bd.service';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
+import { Publicacao } from '../publicacao.model';
+
 @Component({
   selector: 'app-publicacoes',
   templateUrl: './publicacoes.component.html',
@@ -14,7 +16,7 @@ export class PublicacoesComponent implements OnInit {
 
   public email: string;
 
-  public publicacoes: any[];
+  public publicacoes: Publicacao[];
 
   constructor(
     private bdService: BdService
@@ -30,7 +32,7 @@ export class PublicacoesComponent implements OnInit {
 
   public atualizarTimeLine(): void {
     this.bdService.consultaPublicacoes(this.email)
-      .then((publicacoes: any) => {
+      .then((publicacoes: Publicacao[]) => {
         // console.log(publicacoes);
         this.publicacoes = publicacoes;
     });
