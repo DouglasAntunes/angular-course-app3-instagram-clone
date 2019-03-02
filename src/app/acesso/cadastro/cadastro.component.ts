@@ -12,6 +12,7 @@ import { AutenticacaoService } from 'src/app/autenticacao.service';
 export class CadastroComponent implements OnInit {
 
   @Output() public exibirPainel: EventEmitter<string> = new EventEmitter();
+  @Output() public erro: EventEmitter<any> = new EventEmitter();
 
   public mensagemErro: string;
 
@@ -46,6 +47,7 @@ export class CadastroComponent implements OnInit {
     this.autenticacaoService.cadastrarUsuario(usuario)
       .then(() => this.exibirPainelLogin())
       .catch((erro: string) => {
+        this.erro.emit();
         // console.log(erro);
         switch(erro) {
           case 'auth/email-already-in-use': {

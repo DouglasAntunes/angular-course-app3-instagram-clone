@@ -11,6 +11,7 @@ import { AutenticacaoService } from 'src/app/autenticacao.service';
 export class LoginComponent implements OnInit {
 
   @Output() public exibirPainel: EventEmitter<string> = new EventEmitter();
+  @Output() public erro: EventEmitter<any> = new EventEmitter();
 
   public mensagemErro: string;
 
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit {
       this.formulario.value.email,
       this.formulario.value.senha
     ).catch((erro: string) => {
+      this.erro.emit();
       // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signInWithEmailAndPassword
       switch(erro) {
         case 'auth/invalid-email': {
