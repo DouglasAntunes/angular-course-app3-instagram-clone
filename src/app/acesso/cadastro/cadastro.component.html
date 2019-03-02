@@ -44,6 +44,13 @@
 
     <p class="small text-center">Ao cadastrar-se, você concorda com nossos <b>Termos</b> e <b>Política de Privacidade</b>.</p>
 
+    <div *ngIf="mensagemErro !== undefined">
+      <hr />
+
+      <p 
+        class="small text-danger text-center"
+      >{{ mensagemErro }}</p>
+    </div>
   </div>
 </div>
 <br />

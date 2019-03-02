@@ -13,6 +13,8 @@ export class CadastroComponent implements OnInit {
 
   @Output() public exibirPainel: EventEmitter<string> = new EventEmitter();
 
+  public mensagemErro: string;
+
   public formulario: FormGroup = new FormGroup({
     email: new FormControl(null, [ Validators.required ]),
     nomeCompleto: new FormControl(null, [ Validators.required ]),
@@ -42,7 +44,28 @@ export class CadastroComponent implements OnInit {
     );
     // console.log(usuario);
     this.autenticacaoService.cadastrarUsuario(usuario)
-      .then(() => this.exibirPainelLogin());
+      .then(() => this.exibirPainelLogin())
+      .catch((erro: string) => {
+        // console.log(erro);
+        switch(erro) {
+          case 'auth/email-already-in-use': {
+            this.mensagemErro = 'Email já está em uso. Utilize outro email e Tente Novamente.';
+            break;
+          }
+          case 'auth/invalid-email': {
+            this.mensagemErro = 'Email Inválido. Utilize outro email e Tente Novamente.';
+            break;
+          }
+          case 'auth/weak-password': {
+            this.mensagemErro = 'Senha fraca. Utilize senhas fortes com números, letras e caracteres especiais.';
+            break;
+          }
+          default: {
+            this.mensagemErro = 'Erro desconhecido. Codigo: ' + erro;
+            break;
+          }
+        }
+      });
   }
 
 }
