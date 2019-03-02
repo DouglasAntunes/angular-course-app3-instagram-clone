@@ -18,40 +18,51 @@ export class AutenticacaoService {
 
     public cadastrarUsuario(usuario: Usuario): Promise<any> {
         // console.log('chegamos até o serviço: ', usuario);
-        return firebase.auth().createUserWithEmailAndPassword(
-            usuario.email, usuario.senha
-        ).then((resposta: any) => {
-            // console.log(resposta);
+        return new Promise((resolve, reject) => {
+            firebase.auth().createUserWithEmailAndPassword(
+                usuario.email, usuario.senha
+            ).then((resposta: any) => {
+                // console.log(resposta);
 
-            // remover a senha do obj usuário
-            delete usuario.senha;
+                // remover a senha do obj usuário
+                delete usuario.senha;
 
-            // registrando dados complementares no path email na base64
-            firebase.database().ref(`usuario_detalhe/${btoa(usuario.email)}`)
-                .set({
-                    usuario
+                // registrando dados complementares no path email na base64
+                firebase.database().ref(`usuario_detalhe/${btoa(usuario.email)}`)
+                    .set({
+                        usuario
+                }).then(() => resolve())
+                .catch((erro: any) => {
+                    // console.log('Erro no cadastro de detalhes do usuário: ', erro);
+                    reject(erro.code);
+                });
+            }).catch((erro: any) => {
+                // console.log('Erro na criação de usuário: ', erro);
+                reject(erro.code);
             });
-        }).catch((erro: Error) => {
-            console.log('Erro na criação de usuário: ', erro);
         });
     }
 
-    public autenticar(email: string, senha: string): void {
-        console.log('Email: ', email, ' Senha: ', senha);
-        firebase.auth().signInWithEmailAndPassword(email, senha)
-            .then((resposta: any) => {
-                // console.log(resposta);
-                firebase.auth().currentUser.getIdToken()
-                    .then((idToken: string) => {
-                        this.tokenId = idToken;
-                        // console.log(this.tokenId);
-                        localStorage.setItem('idToken', idToken);
-                        this.router.navigate(['/home']);
-                });
-            })
-            .catch((erro: Error) => {
-                console.log('Erro ao logar o usuário: ', erro);
+    public autenticar(email: string, senha: string): Promise<any> {
+        // console.log('Email: ', email, ' Senha: ', senha);
+        return new Promise((resolve, reject) => {
+            firebase.auth().signInWithEmailAndPassword(email, senha)
+                .then((resposta: any) => {
+                    // console.log(resposta);
+                    firebase.auth().currentUser.getIdToken()
+                        .then((idToken: string) => {
+                            this.tokenId = idToken;
+                            // console.log(this.tokenId);
+                            localStorage.setItem('idToken', idToken);
+                            resolve();
+                            this.router.navigate(['/home']);
+                    });
+                })
+                .catch((erro: any) => {
+                    // console.log('Erro ao logar o usuário: ', erro);
+                    reject(erro.code);
             });
+        });
     }
 
     public autenticado(): boolean {

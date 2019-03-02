@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { Usuario } from '../usuario.model';
 import { AutenticacaoService } from 'src/app/autenticacao.service';
@@ -12,12 +12,15 @@ import { AutenticacaoService } from 'src/app/autenticacao.service';
 export class CadastroComponent implements OnInit {
 
   @Output() public exibirPainel: EventEmitter<string> = new EventEmitter();
+  @Output() public erro: EventEmitter<any> = new EventEmitter();
+
+  public mensagemErro: string;
 
   public formulario: FormGroup = new FormGroup({
-    email: new FormControl(null),
-    nomeCompleto: new FormControl(null),
-    nomeUsuario: new FormControl(null),
-    senha: new FormControl(null)
+    email: new FormControl(null, [ Validators.required ]),
+    nomeCompleto: new FormControl(null, [ Validators.required ]),
+    nomeUsuario: new FormControl(null, [ Validators.required ]),
+    senha: new FormControl(null, [ Validators.required, Validators.minLength(6) ])
   });
 
   constructor(
@@ -42,7 +45,29 @@ export class CadastroComponent implements OnInit {
     );
     // console.log(usuario);
     this.autenticacaoService.cadastrarUsuario(usuario)
-      .then(() => this.exibirPainelLogin());
+      .then(() => this.exibirPainelLogin())
+      .catch((erro: string) => {
+        this.erro.emit();
+        // console.log(erro);
+        switch(erro) {
+          case 'auth/email-already-in-use': {
+            this.mensagemErro = 'Email já está em uso. Utilize outro email e Tente Novamente.';
+            break;
+          }
+          case 'auth/invalid-email': {
+            this.mensagemErro = 'Email Inválido. Utilize outro email e Tente Novamente.';
+            break;
+          }
+          case 'auth/weak-password': {
+            this.mensagemErro = 'Senha fraca. Utilize senhas fortes com números, letras e caracteres especiais.';
+            break;
+          }
+          default: {
+            this.mensagemErro = 'Erro desconhecido. Codigo: ' + erro;
+            break;
+          }
+        }
+      });
   }
 
 }
