@@ -53,6 +53,10 @@ export class LoginComponent implements OnInit {
           this.mensagemErro = 'Senha incorreta. Tente novamente';
           break;
         }
+        default: {
+          this.mensagemErro = 'Erro desconhecido. Código: ' + erro;
+          break;
+        }
       }
     });
   }
